@@ -1,9 +1,9 @@
 import express from 'express';
-import { json } from 'body-parser';
 import { randomBytes } from 'crypto';
 
 const app = express();
-app.use(json());
+// app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 const commentsByPostId = {};
 
@@ -14,7 +14,10 @@ app.get('/posts/:id/comments', (req, res) => {
 app.post('/posts/:id/comments', (req, res) => {
   const commentId = randomBytes(4).toString('hex');
   const { content } = req.body;
+
+  //get the comment id or return undefined
   const comments = commentsByPostId[req.params.id] || [];
+
   comments.push({ id: commentId, content });
   commentsByPostId[req.params.id] = comments;
   res.status(201).send(comments);
