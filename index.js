@@ -1,7 +1,7 @@
-const express = require('express');
-const app = express();
+import express, { json } from 'express';
 
-app.use(express.json());
+const app = express();
+app.use(json());
 
 const db = [];
 
@@ -22,4 +22,4 @@ app.post('/posts', (req, res) => {
   return res.status(201).send(post);
 });
 
-module.exports = app;
+export default app;
