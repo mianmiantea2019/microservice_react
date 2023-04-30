@@ -7,9 +7,13 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
 
+
 const posts = {};
 
 const handleEvent = (type, data) => {
+  console.log(type)
+  console.log(data)
+
   if (type === "PostCreated") {
     const { id, title } = data;
 
@@ -20,6 +24,10 @@ const handleEvent = (type, data) => {
     const { id, content, postId, status } = data;
 
     const post = posts[postId];
+
+    if (post.comments == null) {
+      return;
+  }
     post.comments.push({ id, content, status });
   }
 
@@ -27,6 +35,11 @@ const handleEvent = (type, data) => {
     const { id, content, postId, status } = data;
 
     const post = posts[postId];
+    
+    if (post.comments == null) {
+      return;
+  }
+
     const comment = post.comments.find((comment) => {
       return comment.id === id;
     });
